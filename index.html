@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>Ginomai Global Ministries — Become</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#12173F;          /* deepest navy — footer, shadows */
@@ -71,14 +74,19 @@
     height:76px;max-width:1180px;margin:0 auto;padding:0 24px;
   }
   .logo{
-    display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--sky);
-    font-family:var(--ring-font);font-style:italic;font-size:26px;letter-spacing:.5px;
+    display:inline-flex;flex-direction:column;align-items:center;gap:4px;
+    text-decoration:none;color:var(--sky);font-size:27px;
   }
-  .logo b{position:relative;font-weight:400}
-  .logo .o{color:var(--gold);font-style:normal;font-weight:700}
+  .logo b{
+    position:relative;font-family:'Kaushan Script',var(--ring-font);font-weight:400;
+    line-height:1;letter-spacing:.02em;transform:rotate(-2deg);
+    text-shadow:0 3px 0 rgba(9,12,36,.5),0 8px 18px rgba(0,0,0,.35);
+  }
+  .logo .o{color:var(--gold)}
   .logo small{
-    font-family:var(--sans);font-style:normal;font-size:9.5px;font-weight:700;
-    letter-spacing:.28em;text-transform:uppercase;color:var(--mist-dim);
+    font-family:var(--sans);font-size:8.5px;font-weight:700;
+    letter-spacing:.34em;text-transform:uppercase;color:#fff;
+    margin-left:.34em;
   }
   nav.links{display:flex;gap:30px;align-items:center}
   nav.links a{
