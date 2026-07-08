@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ginomai Global Ministries — Become</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --ink:#12173F;          /* deepest navy — footer, shadows */
+    --navy:#151B4E;         /* page ground */
+    --royal:#212A6B;        /* raised surfaces */
+    --royal-2:#2A3480;      /* hover surface */
+    --sky:#8FCDEA;          /* brush blue — headings, links */
+    --mist:#DCEEF9;         /* body text on navy */
+    --mist-dim:#A9C4DC;     /* secondary text */
+    --gold:#F4C63F;         /* the ring — CTAs only */
+    --gold-deep:#D9A81E;
+    --paper:#F4F8FC;        /* light section ground */
+    --paper-ink:#1A2152;    /* text on paper */
+    --ring-font:Georgia,'Times New Roman',serif;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--navy);
+    color:var(--mist);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold);color:var(--navy)}
+  img,svg{max-width:100%;display:block}
+  a{color:var(--sky)}
+  h1,h2,h3{text-wrap:balance}
+
+  /* ---------- utilities ---------- */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .eyebrow{
+    display:flex;align-items:center;gap:12px;
+    font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--sky);margin-bottom:18px;
+  }
+  .eyebrow .ring-dot{
+    width:14px;height:14px;border-radius:50%;
+    border:2.5px solid var(--gold);flex:none;
+    transform:rotate(-12deg) scaleY(.92);
+  }
+  .becoming{font-family:var(--ring-font);font-style:italic;font-weight:400;letter-spacing:0}
+
+  /* scroll reveals */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}.reveal.d4{transition-delay:.4s}
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed;inset:0 0 auto 0;z-index:50;
+    transition:background .35s,box-shadow .35s;
+  }
+  header.scrolled{
+    background:rgba(18,23,63,.86);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 1px 0 rgba(143,205,234,.14);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    height:76px;max-width:1180px;margin:0 auto;padding:0 24px;
+  }
+  .logo{
+    display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--sky);
+    font-family:var(--ring-font);font-style:italic;font-size:26px;letter-spacing:.5px;
+  }
+  .logo b{position:relative;font-weight:400}
+  .logo .o{color:var(--gold);font-style:normal;font-weight:700}
+  .logo small{
+    font-family:var(--sans);font-style:normal;font-size:9.5px;font-weight:700;
+    letter-spacing:.28em;text-transform:uppercase;color:var(--mist-dim);
+  }
+  nav.links{display:flex;gap:30px;align-items:center}
+  nav.links a{
+    color:var(--mist);text-decoration:none;font-size:14px;font-weight:600;letter-spacing:.04em;
+    padding:6px 2px;border-bottom:2px solid transparent;transition:color .25s,border-color .25s;
+  }
+  nav.links a:hover{color:var(--sky);border-bottom-color:var(--sky)}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--gold);color:var(--navy);text-decoration:none;
+    font-weight:800;font-size:14px;letter-spacing:.05em;
+    padding:13px 26px;border-radius:999px;border:2px solid var(--gold);
+    transition:transform .25s,box-shadow .25s,background .25s;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(244,198,63,.35)}
+  .btn.ghost{background:transparent;color:var(--mist);border-color:rgba(143,205,234,.45)}
+  .btn.ghost:hover{border-color:var(--sky);color:var(--sky);box-shadow:0 10px 28px rgba(143,205,234,.15)}
+  .btn:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+  .menu-btn{display:none;background:none;border:0;color:var(--sky);font-size:28px;cursor:pointer;padding:4px 8px}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    padding:130px 0 90px;overflow:hidden;
+  }
+  .glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+  .glow.a{width:560px;height:560px;background:rgba(143,205,234,.16);top:-140px;right:-120px}
+  .glow.b{width:460px;height:460px;background:rgba(244,198,63,.10);bottom:-160px;left:-140px}
+  .greek-watermark{
+    position:absolute;right:-30px;top:50%;transform:translateY(-50%);
+    font-family:var(--ring-font);font-style:italic;font-size:min(24vw,300px);
+    color:rgba(143,205,234,.05);user-select:none;pointer-events:none;line-height:1;white-space:nowrap;
+  }
+  .hero .eyebrow{justify-content:flex-start}
+  .hero h1{
+    font-size:clamp(46px,8.4vw,104px);
+    line-height:.98;font-weight:900;letter-spacing:-.02em;color:#fff;
+    text-transform:uppercase;max-width:12ch;
+  }
+  .hero h1 .ringed{
+    position:relative;display:inline-block;color:var(--sky);
+    font-family:var(--ring-font);font-style:italic;font-weight:400;text-transform:none;
+    padding:0 .08em;
+  }
+  .hero h1 .ringed svg{
+    position:absolute;left:-8%;top:-16%;width:116%;height:132%;overflow:visible;
+  }
+  .hero h1 .ringed path{
+    fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;
+    stroke-dasharray:1200;stroke-dashoffset:1200;
+    animation:draw 1.4s cubic-bezier(.65,.05,.36,1) .9s forwards;
+  }
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .hero p.lede{
+    max-width:56ch;margin:30px 0 38px;font-size:clamp(16px,2vw,19px);color:var(--mist-dim);
+  }
+  .hero .cta-row{display:flex;gap:16px;flex-wrap:wrap}
+  .load{opacity:0;transform:translateY(26px);animation:rise .9s cubic-bezier(.22,.61,.36,1) forwards}
+  .load.l1{animation-delay:.15s}.load.l2{animation-delay:.3s}.load.l3{animation-delay:.5s}.load.l4{animation-delay:.7s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .times-strip{
+    margin-top:64px;display:flex;gap:0;flex-wrap:wrap;
+    border-top:1px solid rgba(143,205,234,.18);
+  }
+  .times-strip .slot{
+    padding:22px 34px 0 0;margin-right:34px;
+  }
+  .times-strip .slot span{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mist-dim)}
+  .times-strip .slot strong{font-size:22px;color:#fff;font-weight:800;font-variant-numeric:tabular-nums}
+
+  /* ---------- marquee ---------- */
+  .marquee{
+    background:var(--gold);color:var(--navy);overflow:hidden;white-space:nowrap;
+    padding:14px 0;font-weight:800;font-size:15px;letter-spacing:.14em;text-transform:uppercase;
+    transform:rotate(-1.2deg) scale(1.02);margin:10px 0;
+  }
+  .marquee .track{display:inline-block;animation:slide 26s linear infinite}
+  .marquee span{margin:0 26px}
+  .marquee .gr{font-family:var(--ring-font);font-style:italic;text-transform:none;letter-spacing:.02em;font-weight:400}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- sections ---------- */
+  section{padding:110px 0;position:relative}
+  .sec-head{max-width:760px;margin-bottom:56px}
+  .sec-head h2{
+    font-size:clamp(32px,4.6vw,54px);line-height:1.04;font-weight:900;
+    letter-spacing:-.015em;color:#fff;text-transform:uppercase;
+  }
+  .sec-head h2 .becoming{color:var(--sky);text-transform:none;font-size:1.05em}
+  .sec-head p{margin-top:18px;color:var(--mist-dim);max-width:60ch}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
+  .about-copy p+p{margin-top:16px}
+  .about-copy .verse{
+    margin-top:30px;padding:26px 28px;border-left:4px solid var(--gold);
+    background:var(--royal);border-radius:0 14px 14px 0;
+  }
+  .about-copy .verse q{font-family:var(--ring-font);font-style:italic;font-size:19px;color:#fff;quotes:'“' '”'}
+  .about-copy .verse cite{display:block;margin-top:10px;font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--sky)}
+  .word-card{
+    background:var(--royal);border:1px solid rgba(143,205,234,.16);border-radius:22px;
+    padding:44px 40px;position:relative;overflow:hidden;
+  }
+  .word-card::after{
+    content:'γ';position:absolute;right:-16px;bottom:-58px;
+    font-family:var(--ring-font);font-style:italic;font-size:230px;color:rgba(143,205,234,.07);line-height:1;
+  }
+  .word-card .gr-word{font-family:var(--ring-font);font-style:italic;font-size:52px;color:var(--sky);line-height:1}
+  .word-card .say{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mist-dim);margin:8px 0 20px}
+  .word-card dl{display:grid;gap:14px}
+  .word-card dt{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .word-card dd{color:var(--mist)}
+
+  /* sundays */
+  .sunday{background:var(--royal)}
+  .sunday::before{
+    content:'';position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .56 0 0 0 0 .8 0 0 0 0 .92 0 0 0 .035 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .sunday .wrap{position:relative}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .step{
+    background:var(--navy);border:1px solid rgba(143,205,234,.14);border-radius:20px;
+    padding:36px 32px;transition:transform .35s,border-color .35s,box-shadow .35s;
+  }
+  .step:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 18px 44px rgba(10,14,42,.5)}
+  .step .k{
+    width:46px;height:46px;border-radius:50%;border:3px solid var(--gold);
+    display:grid;place-items:center;font-weight:900;font-size:17px;color:var(--gold);
+    margin-bottom:22px;transform:rotate(-10deg);
+  }
+  .step h3{color:#fff;font-size:20px;font-weight:800;margin-bottom:10px}
+  .step p{color:var(--mist-dim);font-size:15.5px}
+
+  /* ministries */
+  .min-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .min-card{
+    position:relative;border-radius:22px;overflow:hidden;min-height:300px;
+    display:flex;flex-direction:column;justify-content:flex-end;padding:30px;
+    text-decoration:none;isolation:isolate;
+    border:1px solid rgba(143,205,234,.14);
+    transition:transform .4s cubic-bezier(.22,.61,.36,1),border-color .4s;
+  }
+  .min-card:hover{transform:translateY(-8px);border-color:var(--sky)}
+  .min-card .art{position:absolute;inset:0;z-index:-1;transition:transform .6s cubic-bezier(.22,.61,.36,1)}
+  .min-card:hover .art{transform:scale(1.06)}
+  .min-card .art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,23,63,0) 30%,rgba(18,23,63,.92) 88%)}
+  .min-card h3{color:#fff;font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:.01em}
+  .min-card h3 .becoming{color:var(--sky);text-transform:none;font-size:.95em}
+  .min-card p{color:var(--mist-dim);font-size:14.5px;margin-top:8px;max-width:34ch}
+  .min-card .go{
+    margin-top:16px;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .min-card .go::after{content:'→';transition:transform .3s}
+  .min-card:hover .go::after{transform:translateX(6px)}
+  .art.kids{background:radial-gradient(circle at 25% 25%,#3D6FB3 0%,transparent 55%),radial-gradient(circle at 80% 70%,#F4C63F55 0%,transparent 45%),linear-gradient(150deg,#26307A,#151B4E)}
+  .art.youth{background:radial-gradient(circle at 75% 20%,#8FCDEA44 0%,transparent 50%),linear-gradient(210deg,#2A3480,#12173F)}
+  .art.worship{background:radial-gradient(circle at 50% 90%,#F4C63F33 0%,transparent 55%),linear-gradient(180deg,#26307A,#12173F)}
+  .art.groups{background:radial-gradient(circle at 20% 80%,#8FCDEA33 0%,transparent 50%),linear-gradient(120deg,#212A6B,#151B4E)}
+  .art.missions{background:radial-gradient(circle at 85% 80%,#3D6FB366 0%,transparent 55%),linear-gradient(240deg,#2A3480,#151B4E)}
+  .art.prayer{background:radial-gradient(circle at 50% 10%,#F4C63F2b 0%,transparent 45%),linear-gradient(160deg,#212A6B,#12173F)}
+
+  /* watch */
+  .watch-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:26px}
+  .sermon-main,.sermon-card{
+    border-radius:22px;overflow:hidden;position:relative;border:1px solid rgba(143,205,234,.14);
+    background:linear-gradient(160deg,#26307A,#12173F);text-decoration:none;display:block;
+    transition:transform .35s,border-color .35s;
+  }
+  .sermon-main:hover,.sermon-card:hover{transform:translateY(-6px);border-color:var(--gold)}
+  .sermon-main{padding:56px 44px;min-height:420px;display:flex;flex-direction:column;justify-content:flex-end}
+  .play{
+    width:74px;height:74px;border-radius:50%;background:var(--gold);
+    display:grid;place-items:center;margin-bottom:auto;
+    transition:transform .3s;box-shadow:0 12px 34px rgba(244,198,63,.3);
+  }
+  .sermon-main:hover .play{transform:scale(1.1)}
+  .play::after{content:'';border-style:solid;border-width:13px 0 13px 22px;border-color:transparent transparent transparent var(--navy);margin-left:5px}
+  .sermon-main .tag,.sermon-card .tag{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .sermon-main h3{color:#fff;font-size:clamp(26px,3vw,36px);font-weight:900;margin:12px 0 8px;line-height:1.1}
+  .sermon-main p,.sermon-card p{color:var(--mist-dim);font-size:15px}
+  .side-stack{display:grid;gap:26px}
+  .sermon-card{padding:30px 30px 26px}
+  .sermon-card h4{color:#fff;font-size:19px;font-weight:800;margin:10px 0 6px}
+  .sermon-card .mini-play{
+    float:right;width:42px;height:42px;border-radius:50%;border:2.5px solid var(--sky);
+    display:grid;place-items:center;margin-left:14px;
+  }
+  .sermon-card .mini-play::after{content:'';border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent var(--sky);margin-left:3px}
+
+  /* events */
+  .events{background:var(--royal)}
+  .event-list{display:grid;gap:2px;border-radius:22px;overflow:hidden}
+  .event{
+    display:grid;grid-template-columns:120px 1fr auto;gap:28px;align-items:center;
+    background:var(--navy);padding:30px 36px;transition:background .3s;
+  }
+  .event:hover{background:var(--royal-2)}
+  .event .date{text-align:center;border-right:1px solid rgba(143,205,234,.18);padding-right:24px}
+  .event .date b{display:block;font-size:36px;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums}
+  .event .date span{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mist-dim)}
+  .event h3{color:#fff;font-size:20px;font-weight:800}
+  .event p{color:var(--mist-dim);font-size:14.5px;margin-top:4px}
+  .event .btn.ghost{padding:10px 20px;font-size:12.5px}
+
+  /* give */
+  .give .wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .give-panel{
+    background:linear-gradient(150deg,var(--royal),#1A2158);border:1px solid rgba(244,198,63,.3);
+    border-radius:26px;padding:46px 42px;position:relative;overflow:hidden;
+  }
+  .give-panel::before{
+    content:'';position:absolute;width:280px;height:280px;border-radius:50%;
+    border:3px solid rgba(244,198,63,.25);right:-90px;top:-90px;transform:rotate(-12deg) scaleY(.92);
+  }
+  .give-panel h3{color:#fff;font-size:24px;font-weight:900;margin-bottom:20px}
+  .give-panel ul{list-style:none;display:grid;gap:16px}
+  .give-panel li{display:flex;gap:14px;align-items:flex-start;color:var(--mist)}
+  .give-panel li::before{
+    content:'';flex:none;width:12px;height:12px;border-radius:50%;
+    border:2.5px solid var(--gold);margin-top:6px;transform:rotate(-12deg) scaleY(.92);
+  }
+  .give-panel li b{color:var(--sky)}
+
+  /* visit — light section */
+  .visit{background:var(--paper);color:var(--paper-ink)}
+  .visit .eyebrow{color:#2A65A8}
+  .visit .sec-head h2{color:var(--paper-ink)}
+  .visit .sec-head h2 .becoming{color:#2A65A8}
+  .visit .sec-head p{color:#4A567E}
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .visit-info dl{display:grid;gap:26px}
+  .visit-info dt{font-size:11px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#2A65A8;margin-bottom:6px}
+  .visit-info dd{font-size:18px;font-weight:600;color:var(--paper-ink)}
+  .visit-info dd small{display:block;font-weight:400;font-size:14.5px;color:#4A567E;margin-top:2px}
+  .visit-form{
+    background:#fff;border-radius:24px;padding:42px 38px;
+    box-shadow:0 24px 70px rgba(21,27,78,.14);
+  }
+  .visit-form h3{font-size:22px;font-weight:900;color:var(--paper-ink);margin-bottom:6px}
+  .visit-form>p{font-size:14.5px;color:#4A567E;margin-bottom:26px}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#2A65A8;margin-bottom:8px}
+  .field input,.field select{
+    width:100%;padding:14px 16px;border:1.5px solid #C9D8EA;border-radius:12px;
+    font:inherit;font-size:15px;color:var(--paper-ink);background:#F7FAFD;
+    transition:border-color .25s,box-shadow .25s;
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:#2A65A8;box-shadow:0 0 0 4px rgba(42,101,168,.15)}
+  .visit-form .btn{width:100%;justify-content:center;margin-top:6px}
+  .form-note{font-size:12.5px;color:#7C89AC;text-align:center;margin-top:14px}
+
+  /* footer */
+  footer{background:var(--ink);padding:80px 0 36px;border-top:1px solid rgba(143,205,234,.12)}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}
+  .foot-grid .logo{font-size:30px}
+  .foot-grid p{color:var(--mist-dim);font-size:14.5px;margin-top:16px;max-width:34ch}
+  .foot-grid h4{color:#fff;font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}
+  .foot-grid ul{list-style:none;display:grid;gap:12px}
+  .foot-grid ul a{color:var(--mist-dim);text-decoration:none;font-size:15px;transition:color .25s}
+  .foot-grid ul a:hover{color:var(--sky)}
+  .foot-base{
+    border-top:1px solid rgba(143,205,234,.12);padding-top:28px;
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    font-size:13px;color:var(--mist-dim);
+  }
+  .foot-base .gr{font-family:var(--ring-font);font-style:italic;color:var(--sky)}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:960px){
+    .about-grid,.watch-grid,.give .wrap,.visit-grid{grid-template-columns:1fr;gap:40px}
+    .steps,.min-grid{grid-template-columns:repeat(2,1fr)}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:680px){
+    nav.links{
+      position:fixed;inset:76px 0 auto 0;flex-direction:column;align-items:stretch;gap:0;
+      background:rgba(18,23,63,.98);backdrop-filter:blur(14px);
+      padding:10px 24px 26px;display:none;box-shadow:0 30px 60px rgba(0,0,0,.5);
+    }
+    nav.links.open{display:flex}
+    nav.links a{padding:15px 4px;border-bottom:1px solid rgba(143,205,234,.12);font-size:16px}
+    nav.links .btn{margin-top:16px;justify-content:center}
+    .menu-btn{display:block}
+    .steps,.min-grid{grid-template-columns:1fr}
+    .event{grid-template-columns:86px 1fr;padding:24px 22px}
+    .event .btn.ghost{grid-column:2;justify-self:start}
+    .times-strip .slot{padding-right:0;margin-right:24px}
+    section{padding:80px 0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
+    html{scroll-behavior:auto}
+    .load,.reveal{opacity:1;transform:none}
+    .hero h1 .ringed path{stroke-dashoffset:0}
+    .marquee .track{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<header id="topbar">
+  <div class="nav">
+    <a class="logo" href="#top" aria-label="Ginomai Global Ministries — home">
+      <b>Gin<span class="o">o</span>mai</b>
+      <small>Global Ministries</small>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav class="links" id="navLinks" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#sundays">Sundays</a>
+      <a href="#ministries">Ministries</a>
+      <a href="#watch">Watch</a>
+      <a href="#events">Events</a>
+      <a href="#give">Give</a>
+      <a class="btn" href="#visit">Plan Your Visit</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-label="Welcome">
+    <div class="glow a"></div>
+    <div class="glow b"></div>
+    <div class="greek-watermark" aria-hidden="true">γίνομαι</div>
+    <div class="wrap">
+      <div class="eyebrow load l1">
+        <span class="ring-dot"></span>
+        Ginomai&nbsp;·&nbsp;γίνομαι&nbsp;·&nbsp;Greek — “to become”
+      </div>
+      <h1 class="load l2">
+        <span class="ringed">Become
+          <svg viewBox="0 0 400 160" aria-hidden="true" preserveAspectRatio="none">
+            <path d="M 205 12 C 320 8 388 38 386 78 C 384 124 292 150 196 148 C 96 146 16 122 14 80 C 12 40 88 14 190 12 C 240 11 300 16 340 26"/>
+          </svg>
+        </span><br>
+        everything God<br>created you to be
+      </h1>
+      <p class="lede load l3">
+        Ginomai Global Ministries is a Christ-centred family where ordinary people are
+        transformed into who God designed them to be — in faith, in purpose, and in community.
+        Wherever you are on the journey, there is a place for you here.
+      </p>
+      <div class="cta-row load l4">
+        <a class="btn" href="#visit">Plan Your Visit</a>
+        <a class="btn ghost" href="#watch">Watch Online</a>
+      </div>
+      <div class="times-strip load l4">
+        <div class="slot"><span>First Service</span><strong>8:30 AM</strong></div>
+        <div class="slot"><span>Second Service</span><strong>10:30 AM</strong></div>
+        <div class="slot"><span>Third Service</span><strong>12:30 PM</strong></div>
+        <div class="slot"><span>Every Sunday</span><strong>All are welcome</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      <span>Become</span><span class="gr">γίνομαι</span><span>Believe</span><span>Belong</span>
+      <span>Become</span><span class="gr">γίνομαι</span><span>Believe</span><span>Belong</span>
+      <span>Become</span><span class="gr">γίνομαι</span><span>Believe</span><span>Belong</span>
+      <span>Become</span><span class="gr">γίνομαι</span><span>Believe</span><span>Belong</span>
+    </div>
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" aria-label="Who we are">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <div class="eyebrow"><span class="ring-dot"></span>Who We Are</div>
+          <div class="sec-head" style="margin-bottom:28px">
+            <h2>A church built on <span class="becoming">becoming</span></h2>
+          </div>
+          <p>
+            Our name comes from the Greek word <em>ginomai</em> — “to come into being, to become.”
+            It is the story of every person who walks through our doors: God is not finished with
+            you, and neither is your story.
+          </p>
+          <p>
+            We are a global family of believers passionate about worship, rooted in the Word,
+            and committed to raising disciples who transform their homes, cities, and nations.
+          </p>
+          <div class="verse">
+            <q>But as many as received Him, to them gave He power to become the sons of God.</q>
+            <cite>John 1:12 — the “Ginomai” verse</cite>
+          </div>
+        </div>
+        <div class="word-card reveal d2">
+          <div class="gr-word">γίνομαι</div>
+          <div class="say">ghin-om-ahee · Greek verb</div>
+          <dl>
+            <div><dt>To become</dt><dd>To be transformed — from one state of being into another.</dd></div>
+            <div><dt>To come into being</dt><dd>To be born, to arise — a new creation beginning.</dd></div>
+            <div><dt>To be fulfilled</dt><dd>What God has spoken, coming to pass in your life.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUNDAYS ============ -->
+  <section id="sundays" class="sunday" aria-label="Sundays at Ginomai">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow"><span class="ring-dot"></span>Sundays at Ginomai</div>
+        <h2>Your first visit, <span class="becoming">made simple</span></h2>
+        <p>No dress code, no pressure, no perfect people — just a warm family, powerful worship, and a word that meets you where you are. Here is what to expect.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal d1">
+          <div class="k">1</div>
+          <h3>You arrive, we welcome you</h3>
+          <p>Our host team meets you at the door, helps you find a seat, and gets your kids happily checked in to Ginomai Kids.</p>
+        </div>
+        <div class="step reveal d2">
+          <div class="k">2</div>
+          <h3>We worship together</h3>
+          <p>Vibrant, Spirit-filled worship and practical, Bible-based teaching — services run about 90 minutes.</p>
+        </div>
+        <div class="step reveal d3">
+          <div class="k">3</div>
+          <h3>You find your people</h3>
+          <p>Stay for a coffee at the connect corner, meet a pastor, and discover the next step on your becoming journey.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MINISTRIES ============ -->
+  <section id="ministries" aria-label="Ministries">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow"><span class="ring-dot"></span>Ministries</div>
+        <h2>A place for every person to <span class="becoming">become</span></h2>
+        <p>From the youngest child to the whole city — every ministry exists to help someone take their next step with Jesus.</p>
+      </div>
+      <div class="min-grid">
+        <a class="min-card reveal d1" href="#visit">
+          <div class="art kids"></div>
+          <h3>Ginomai <span class="becoming">Kids</span></h3>
+          <p>Safe, fun, Bible-rich environments where children discover who God made them to be.</p>
+          <span class="go">Learn more</span>
+        </a>
+        <a class="min-card reveal d2" href="#visit">
+          <div class="art youth"></div>
+          <h3>Youth &amp; <span class="becoming">Young Adults</span></h3>
+          <p>A generation on fire — worship nights, mentorship, and real community for ages 13–30.</p>
+          <span class="go">Learn more</span>
+        </a>
+        <a class="min-card reveal d3" href="#visit">
+          <div class="art worship"></div>
+          <h3>Worship &amp; <span class="becoming">Creative</span></h3>
+          <p>Musicians, singers, media and production teams leading the house into God’s presence.</p>
+          <span class="go">Learn more</span>
+        </a>
+        <a class="min-card reveal d1" href="#visit">
+          <div class="art groups"></div>
+          <h3>Life <span class="becoming">Groups</span></h3>
+          <p>Small communities meeting in homes across the city — where church becomes family.</p>
+          <span class="go">Learn more</span>
+        </a>
+        <a class="min-card reveal d2" href="#visit">
+          <div class="art missions"></div>
+          <h3>Missions &amp; <span class="becoming">Outreach</span></h3>
+          <p>Taking the gospel beyond our walls — feeding programs, school outreaches, and global missions.</p>
+          <span class="go">Learn more</span>
+        </a>
+        <a class="min-card reveal d3" href="#visit">
+          <div class="art prayer"></div>
+          <h3>Prayer &amp; <span class="becoming">Intercession</span></h3>
+          <p>The engine room of the house — daily prayer altars and monthly nights of encounter.</p>
+          <span class="go">Learn more</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WATCH ============ -->
+  <section id="watch" aria-label="Watch sermons">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow"><span class="ring-dot"></span>Watch &amp; Listen</div>
+        <h2>Miss a Sunday? <span class="becoming">Never miss a word.</span></h2>
+        <p>Catch the latest messages, or join us live every Sunday from anywhere in the world.</p>
+      </div>
+      <div class="watch-grid">
+        <a class="sermon-main reveal" href="#visit" aria-label="Watch the latest sermon">
+          <span class="play" aria-hidden="true"></span>
+          <span class="tag">Latest Message · Current Series</span>
+          <h3>Becoming: The Unfinished Work of God in You</h3>
+          <p>Pastor · Ginomai Global Ministries · 52 min</p>
+        </a>
+        <div class="side-stack">
+          <a class="sermon-card reveal d2" href="#visit">
+            <span class="mini-play" aria-hidden="true"></span>
+            <span class="tag">Series</span>
+            <h4>Rooted — living deep in the Word</h4>
+            <p>4-part series · watch anytime</p>
+          </a>
+          <a class="sermon-card reveal d3" href="#visit">
+            <span class="mini-play" aria-hidden="true"></span>
+            <span class="tag">Series</span>
+            <h4>The House — why the church still matters</h4>
+            <p>3-part series · watch anytime</p>
+          </a>
+          <a class="sermon-card reveal d4" href="#visit">
+            <span class="mini-play" aria-hidden="true"></span>
+            <span class="tag">Live</span>
+            <h4>Sundays live — 10:30 AM</h4>
+            <p>Streaming on YouTube &amp; Facebook</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS ============ -->
+  <section id="events" class="events" aria-label="Upcoming events">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow"><span class="ring-dot"></span>What’s Coming Up</div>
+        <h2>Mark your <span class="becoming">calendar</span></h2>
+      </div>
+      <div class="event-list reveal d1">
+        <div class="event">
+          <div class="date"><b>12</b><span>Jul</span></div>
+          <div><h3>Night of Worship — Becoming</h3><p>An evening of extended worship, prayer, and encounter. Doors open 6:00 PM.</p></div>
+          <a class="btn ghost" href="#visit">Save a seat</a>
+        </div>
+        <div class="event">
+          <div class="date"><b>19</b><span>Jul</span></div>
+          <div><h3>New Here? Welcome Lunch</h3><p>Meet the pastors, hear the vision, and find your place in the family — right after third service.</p></div>
+          <a class="btn ghost" href="#visit">RSVP</a>
+        </div>
+        <div class="event">
+          <div class="date"><b>02</b><span>Aug</span></div>
+          <div><h3>City Serve — Community Outreach</h3><p>Join hundreds of volunteers serving schools, hospitals, and homes across the city.</p></div>
+          <a class="btn ghost" href="#visit">Volunteer</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GIVE ============ -->
+  <section id="give" class="give" aria-label="Giving">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow"><span class="ring-dot"></span>Generosity</div>
+        <div class="sec-head" style="margin-bottom:24px">
+          <h2>Giving that helps people <span class="becoming">become</span></h2>
+        </div>
+        <p style="color:var(--mist-dim);max-width:54ch">
+          Every gift plants the gospel deeper — in our city and beyond. Your generosity fuels
+          ministries, missions, outreaches, and the next person's story of becoming.
+        </p>
+        <div class="cta-row" style="margin-top:34px;display:flex;gap:16px;flex-wrap:wrap">
+          <a class="btn" href="#visit">Give Online</a>
+          <a class="btn ghost" href="#visit">Other Ways to Give</a>
+        </div>
+      </div>
+      <div class="give-panel reveal d2">
+        <h3>Ways to give</h3>
+        <ul>
+          <li><span><b>Online</b> — secure card or mobile giving, one-time or recurring.</span></li>
+          <li><span><b>Mobile Money</b> — give from your phone in seconds, any network.</span></li>
+          <li><span><b>Bank Transfer</b> — details available from the finance desk.</span></li>
+          <li><span><b>In Person</b> — at any Sunday service or at the church office.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VISIT ============ -->
+  <section id="visit" class="visit" aria-label="Plan your visit">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="eyebrow"><span class="ring-dot"></span>Plan Your Visit</div>
+        <h2>This Sunday, <span class="becoming">come as you are</span></h2>
+        <p>Tell us you’re coming and we’ll roll out the welcome — a reserved seat, kids check-in ready, and a friendly face waiting for you.</p>
+      </div>
+      <div class="visit-grid">
+        <div class="visit-info reveal d1">
+          <dl>
+            <div>
+              <dt>Service Times</dt>
+              <dd>Sundays · 8:30 AM · 10:30 AM · 12:30 PM<small>Midweek prayer &amp; Bible study — Wednesdays, 6:00 PM</small></dd>
+            </div>
+            <div>
+              <dt>Location</dt>
+              <dd>Ginomai Worship Centre<small>Kampala, Uganda — update with your street address</small></dd>
+            </div>
+            <div>
+              <dt>Contact</dt>
+              <dd>hello@ginomaiglobal.org<small>+256 700 000 000 — WhatsApp &amp; calls</small></dd>
+            </div>
+            <div>
+              <dt>Online</dt>
+              <dd>@GinomaiGlobal<small>YouTube · Facebook · Instagram — Sundays live from 10:30 AM</small></dd>
+            </div>
+          </dl>
+        </div>
+        <form class="visit-form reveal d2" onsubmit="event.preventDefault();this.innerHTML='<h3>See you Sunday! 🎉</h3><p style=&quot;font-size:15px;color:#4A567E&quot;>Your visit is planned. Our welcome team will reach out before the weekend.</p>'">
+          <h3>Plan your visit</h3>
+          <p>Takes 30 seconds — we’ll take care of the rest.</p>
+          <div class="field">
+            <label for="pv-name">Your name</label>
+            <input id="pv-name" type="text" placeholder="Full name" required>
+          </div>
+          <div class="field">
+            <label for="pv-phone">Phone or email</label>
+            <input id="pv-phone" type="text" placeholder="How can we reach you?" required>
+          </div>
+          <div class="field">
+            <label for="pv-service">Which service?</label>
+            <select id="pv-service">
+              <option>First service — 8:30 AM</option>
+              <option selected>Second service — 10:30 AM</option>
+              <option>Third service — 12:30 PM</option>
+            </select>
+          </div>
+          <button class="btn" type="submit">Plan My Visit</button>
+          <p class="form-note">We’ll never share your details. Ever.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top"><b>Gin<span class="o">o</span>mai</b></a>
+        <p>Ginomai Global Ministries — a Christ-centred family where people become everything God created them to be.</p>
+      </div>
+      <div>
+        <h4>Church</h4>
+        <ul>
+          <li><a href="#about">Who We Are</a></li>
+          <li><a href="#sundays">Sundays</a></li>
+          <li><a href="#ministries">Ministries</a></li>
+          <li><a href="#events">Events</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Take a Step</h4>
+        <ul>
+          <li><a href="#visit">Plan Your Visit</a></li>
+          <li><a href="#watch">Watch Online</a></li>
+          <li><a href="#give">Give</a></li>
+          <li><a href="#visit">Join a Life Group</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#visit">YouTube</a></li>
+          <li><a href="#visit">Facebook</a></li>
+          <li><a href="#visit">Instagram</a></li>
+          <li><a href="#visit">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Ginomai Global Ministries. All rights reserved.</span>
+      <span><span class="gr">γίνομαι</span> — to become · John 1:12</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // sticky nav background
+  const bar = document.getElementById('topbar');
+  const onScroll = () => bar.classList.toggle('scrolled', scrollY > 24);
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // mobile menu
+  const menuBtn = document.getElementById('menuBtn');
+  const links = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+    menuBtn.textContent = open ? '✕' : '☰';
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+    menuBtn.textContent = '☰';
+  }));
+
+  // scroll reveals
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.14, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // gentle parallax on hero glows
+  const glows = document.querySelectorAll('.glow');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) addEventListener('scroll', () => {
+    const y = scrollY;
+    glows.forEach((g,i) => g.style.transform = `translateY(${y * (i ? -.06 : .1)}px)`);
+  }, {passive:true});
+</script>
+
+</body>
+</html>
