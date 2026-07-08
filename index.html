@@ -96,6 +96,18 @@
   .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(244,198,63,.35)}
   .btn.ghost{background:transparent;color:var(--mist);border-color:rgba(143,205,234,.45)}
   .btn.ghost:hover{border-color:var(--sky);color:var(--sky);box-shadow:0 10px 28px rgba(143,205,234,.15)}
+  /* glossy sky-blue button — echoes the logo lettering */
+  .btn.sky{
+    color:var(--ink);border:2px solid rgba(255,255,255,.55);
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.62) 0%,rgba(255,255,255,.06) 46%,rgba(255,255,255,0) 60%),
+      linear-gradient(180deg,#C6E7F8 0%,#8FCDEA 52%,#5CA5D0 100%);
+    box-shadow:0 8px 22px rgba(55,120,170,.45),inset 0 1px 1px rgba(255,255,255,.9);
+  }
+  .btn.sky:hover{
+    transform:translateY(-2px);
+    box-shadow:0 13px 32px rgba(55,120,170,.62),inset 0 1px 1px rgba(255,255,255,.95);
+  }
   .btn:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
   .menu-btn{display:none;background:none;border:0;color:var(--sky);font-size:28px;cursor:pointer;padding:4px 8px}
 
@@ -396,7 +408,7 @@
       <a href="#watch">Watch</a>
       <a href="#events">Events</a>
       <a href="#give">Give</a>
-      <a class="btn" href="#visit">Plan Your Visit</a>
+      <a class="btn sky" href="#visit">Plan Your Visit</a>
     </nav>
   </div>
 </header>
