@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <title>Ginomai Global Ministries — Become</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#12173F;          /* deepest navy — footer, shadows */
@@ -77,12 +74,7 @@
     display:inline-flex;flex-direction:column;align-items:center;gap:4px;
     text-decoration:none;color:var(--sky);font-size:27px;
   }
-  .logo b{
-    position:relative;font-family:'Kaushan Script',var(--ring-font);font-weight:400;
-    line-height:1;letter-spacing:.02em;transform:rotate(-2deg);
-    text-shadow:0 3px 0 rgba(9,12,36,.5),0 8px 18px rgba(0,0,0,.35);
-  }
-  .logo .o{color:var(--gold)}
+  .logo img{height:38px;width:auto}
   .logo small{
     font-family:var(--sans);font-size:8.5px;font-weight:700;
     letter-spacing:.34em;text-transform:uppercase;color:#fff;
@@ -344,7 +336,7 @@
   /* footer */
   footer{background:var(--ink);padding:80px 0 36px;border-top:1px solid rgba(143,205,234,.12)}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}
-  .foot-grid .logo{font-size:30px}
+  .foot-grid .logo img{height:52px}
   .foot-grid p{color:var(--mist-dim);font-size:14.5px;margin-top:16px;max-width:34ch}
   .foot-grid h4{color:#fff;font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}
   .foot-grid ul{list-style:none;display:grid;gap:12px}
@@ -393,7 +385,7 @@
 <header id="topbar">
   <div class="nav">
     <a class="logo" href="#top" aria-label="Ginomai Global Ministries — home">
-      <b>Gin<span class="o">o</span>mai</b>
+      <img src="assets/logo.png" alt="Ginomai">
       <small>Global Ministries</small>
     </a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
@@ -727,7 +719,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="logo" href="#top"><b>Gin<span class="o">o</span>mai</b></a>
+        <a class="logo" href="#top"><img src="assets/logo.png" alt="Ginomai"><small>Global Ministries</small></a>
         <p>Ginomai Global Ministries — a Christ-centred family where people become everything God created them to be.</p>
       </div>
       <div>
