@@ -234,8 +234,13 @@
     font-family:var(--ring-font);font-style:italic;font-size:200px;line-height:1;
     color:rgba(143,205,234,.08);pointer-events:none;
   }
+  /* --emerge is driven by scroll: the portrait rises out of the frame as the
+     card travels up the viewport (set in JS, 0 when fully emerged) */
   .leaders-cut{
-    position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+    position:absolute;left:50%;bottom:0;
+    transform:translateX(-50%) translateY(var(--emerge,0px));
+    transition:transform .35s cubic-bezier(.22,.61,.36,1);
+    will-change:transform;
     height:124%;width:auto;max-width:none;
     filter:drop-shadow(0 22px 34px rgba(5,8,24,.6));
   }
@@ -868,6 +873,24 @@
     const y = scrollY;
     glows.forEach((g,i) => g.style.transform = `translateY(${y * (i ? -.06 : .1)}px)`);
   }, {passive:true});
+
+  // leaders portrait emerges from its frame as the card scrolls up the viewport
+  const leaders = document.querySelector('.leaders');
+  if (leaders && !reduce) {
+    const lbox = leaders.querySelector('.leaders-box');
+    let queued = false;
+    const emerge = () => {
+      queued = false;
+      const r = lbox.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight * .78)));
+      leaders.style.setProperty('--emerge', ((1 - p) * r.height * .16).toFixed(1) + 'px');
+    };
+    addEventListener('scroll', () => {
+      if (!queued) { queued = true; requestAnimationFrame(emerge); }
+    }, {passive:true});
+    addEventListener('resize', emerge, {passive:true});
+    emerge();
+  }
 </script>
 
 </body>
