@@ -37,5 +37,6 @@ Search `index.html` for these placeholders and replace with real details:
 - Phone `+256 700 000 000` and email `hello@ginomaiglobal.org`
 - Social handles `@GinomaiGlobal`
 - Event dates and sermon titles
+- Ginomai Radio: all four cards in the Watch &amp; Listen section link to `https://content-api.zeno.fm/s/9g7bTB`, which redirects to the station page at zeno.fm/radio/ginomai-radio. Zeno sends `X-Frame-Options: DENY`, so the station cannot be embedded in an iframe — linking out is the only option.
 - Wire the "Plan your visit" form to a real backend (currently shows a confirmation message only)
 - Swap hero photos by replacing `assets/hero/hero-1.jpg` … `hero-6.jpg` (~1500px wide, JPEG q60; adjust `--pos` on each `.hero-slide` to reframe)
