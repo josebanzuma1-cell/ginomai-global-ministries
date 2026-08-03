@@ -150,7 +150,10 @@
       radial-gradient(125% 85% at 50% 50%,transparent 28%,rgba(18,23,63,.72) 100%),
       linear-gradient(180deg,rgba(21,27,78,.92) 0%,transparent 24%,transparent 60%,var(--navy) 100%);
   }
-  .hero .wrap{position:relative;z-index:2}
+  /* width:100% is required — .wrap's `margin:0 auto` cancels flex stretch on
+     the column hero, which shrank it to fit-content and indented the copy
+     ~180px further in than every other section */
+  .hero .wrap{position:relative;z-index:2;width:100%}
   .hero .eyebrow{justify-content:flex-start}
   .hero h1{
     font-size:clamp(46px,8.4vw,104px);
@@ -246,16 +249,17 @@
   }
   .leaders-names{
     position:absolute;left:0;right:0;bottom:0;z-index:2;
-    padding:70px 18px 22px;text-align:center;border-radius:0 0 22px 22px;
+    padding:62px 18px 16px;text-align:center;border-radius:0 0 22px 22px;
     background:linear-gradient(180deg,rgba(26,34,88,0) 0%,rgba(24,31,80,.9) 48%,#1a2258 84%);
   }
   .leaders-names .ln{
-    display:block;font-size:clamp(12px,1.35vw,14px);font-weight:800;
-    letter-spacing:.16em;text-transform:uppercase;color:#fff;
+    display:block;font-family:var(--ring-font);
+    font-size:clamp(15px,1.55vw,18px);font-weight:400;
+    letter-spacing:.005em;line-height:1.22;color:#fff;
   }
   .leaders-names .amp{
-    display:block;margin:5px 0;font-family:var(--ring-font);font-style:italic;
-    font-size:17px;color:var(--gold);
+    display:block;margin:1px 0;font-family:var(--ring-font);font-style:italic;
+    font-size:13px;line-height:1;color:var(--gold);
   }
 
   /* sundays */
