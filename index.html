@@ -189,7 +189,7 @@
     padding:22px 34px 0 0;margin-right:34px;
   }
   .times-strip .slot span{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mist-dim)}
-  .times-strip .slot strong{font-size:22px;color:#fff;font-weight:800;font-variant-numeric:tabular-nums}
+  .times-strip .slot strong{font-size:19px;color:#fff;font-weight:800;font-variant-numeric:tabular-nums}
 
   /* ---------- marquee ---------- */
   .marquee{
@@ -421,6 +421,56 @@
   }
   .foot-base .gr{font-family:var(--ring-font);font-style:italic;color:var(--sky)}
 
+  /* radio programmes — the stage holds still while the schedule reveals */
+  .radio{background:var(--royal)}
+  .pin-track{position:relative;height:calc(100svh + 182vh)}
+  .pin-stage{position:sticky;top:0;min-height:100svh;display:flex;align-items:center;padding:70px 0}
+  .prog{list-style:none;display:grid;gap:10px;max-width:960px}
+  .prog-day{
+    margin:16px 0 4px;font-size:11px;font-weight:800;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--gold);
+  }
+  .prog-row{
+    display:grid;grid-template-columns:160px 1fr auto;gap:22px;align-items:center;
+    padding:15px 22px;border-radius:16px;text-decoration:none;
+    background:linear-gradient(150deg,#26307A,#171E52);
+    border:1px solid rgba(143,205,234,.14);
+    transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1),border-color .3s;
+  }
+  .prog-row:hover{border-color:var(--gold)}
+  .prog-time{font-size:13.5px;font-weight:800;color:var(--sky);font-variant-numeric:tabular-nums}
+  .prog-name{color:#fff;font-size:18px;font-weight:800}
+  .prog-host{color:var(--mist-dim);font-size:13.5px;text-align:right}
+  .prog-foot{margin-top:28px;color:var(--mist-dim);font-family:var(--ring-font);font-style:italic}
+  /* hidden only once JS is driving the reveal, so it degrades to visible */
+  .radio.js-pin .prog-row{opacity:0;transform:translateY(26px)}
+  .radio.js-pin .prog-row.on{opacity:1;transform:none}
+
+  /* gathering schedule */
+  .sched-head{color:#fff;font-size:22px;font-weight:900;margin:56px 0 18px}
+  .sched{display:grid;gap:12px;max-width:840px}
+  .sched-row{
+    display:grid;grid-template-columns:170px 1fr auto;gap:22px;align-items:center;
+    padding:16px 22px;border-radius:16px;
+    background:rgba(255,255,255,.045);border:1px solid rgba(143,205,234,.14);
+  }
+  .sched-when{font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+  .sched-what{color:#fff;font-size:18px;font-weight:800}
+  .sched-time{color:var(--sky);font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+
+  /* mobile money */
+  .momo{display:grid;gap:16px}
+  .momo-net{padding:18px 20px;border-radius:16px;background:rgba(9,12,36,.34);border:1px solid rgba(143,205,234,.16)}
+  .momo-name{font-size:11.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .momo-net ol{margin:0;padding-left:19px;display:grid;gap:7px;color:var(--mist);font-size:15px}
+  .ussd,.code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-weight:700;color:#fff;background:rgba(143,205,234,.14);
+    padding:2px 9px;border-radius:7px;white-space:nowrap;
+  }
+  a.ussd{text-decoration:none;border:1px solid rgba(143,205,234,.32)}
+  a.ussd:hover{border-color:var(--gold);color:var(--gold)}
+
   /* ---------- responsive ---------- */
   @media(max-width:960px){
     .about-grid,.watch-grid,.give .wrap,.visit-grid{grid-template-columns:1fr;gap:40px}
@@ -444,6 +494,9 @@
     .event{grid-template-columns:86px 1fr;padding:24px 22px}
     .event .btn.ghost{grid-column:2;justify-self:start}
     .times-strip .slot{padding-right:0;margin-right:24px}
+    .prog-row,.sched-row{grid-template-columns:1fr;gap:5px;padding:15px 18px}
+    .prog-host{text-align:left}
+    .pin-track{height:calc(100svh + 150vh)}
     section{padding:80px 0}
   }
   @media(prefers-reduced-motion:reduce){
@@ -455,6 +508,10 @@
     /* hold a single still frame instead of the drifting crossfade */
     .hero-slide{animation:none;opacity:0;transform:scale(1.04)}
     .hero-slide:first-child{opacity:.42}
+    /* no pinning — the schedule is simply all there */
+    .pin-track{height:auto}
+    .pin-stage{position:static;min-height:0}
+    .radio.js-pin .prog-row{opacity:1;transform:none}
   }
 </style>
 </head>
@@ -517,10 +574,10 @@
         <a class="btn ghost" href="#watch">Watch Online</a>
       </div>
       <div class="times-strip load l4">
-        <div class="slot"><span>First Service</span><strong>8:30 AM</strong></div>
-        <div class="slot"><span>Second Service</span><strong>10:30 AM</strong></div>
-        <div class="slot"><span>Third Service</span><strong>12:30 PM</strong></div>
-        <div class="slot"><span>Every Sunday</span><strong>All are welcome</strong></div>
+        <div class="slot"><span>Sunday Service</span><strong>11:00 AM – 1:00 PM</strong></div>
+        <div class="slot"><span>1st Friday · Prayers</span><strong>7:00 – 9:00 PM</strong></div>
+        <div class="slot"><span>2nd Friday · Praise &amp; Worship</span><strong>7:00 – 9:00 PM</strong></div>
+        <div class="slot"><span>3rd Saturday · Street Evangelism</span><strong>11:00 AM – 1:00 PM</strong></div>
       </div>
     </div>
   </section>
@@ -562,12 +619,12 @@
           <div class="leaders-box">
             <div class="leaders-clip">
               <img class="leaders-cut" src="assets/leaders.webp"
-                   alt="Ap. Kenneth Bamuleta and Ap. Agnes Bamuleta" loading="lazy" decoding="async">
+                   alt="Ap. Kenneth Bamuleeta and Ap. Agness Zalwango Bamuleeta" loading="lazy" decoding="async">
             </div>
             <figcaption class="leaders-names">
-              <span class="ln">Ap: Kenneth Bamuleta</span>
+              <span class="ln">Ap: Kenneth Bamuleeta</span>
               <span class="amp">&amp;</span>
-              <span class="ln">Ap: Agnes Bamuleta</span>
+              <span class="ln">Ap: Agness Zalwango Bamuleeta</span>
             </figcaption>
           </div>
         </figure>
@@ -592,12 +649,36 @@
         <div class="step reveal d2">
           <div class="k">2</div>
           <h3>We worship together</h3>
-          <p>Vibrant, Spirit-filled worship and practical, Bible-based teaching — services run about 90 minutes.</p>
+          <p>Vibrant, Spirit-filled worship and practical, Bible-based teaching — Sunday service runs 11:00 AM – 1:00 PM.</p>
         </div>
         <div class="step reveal d3">
           <div class="k">3</div>
           <h3>You find your people</h3>
           <p>Stay for a coffee at the connect corner, meet a pastor, and discover the next step on your becoming journey.</p>
+        </div>
+      </div>
+
+      <h3 class="sched-head reveal">Our gatherings</h3>
+      <div class="sched">
+        <div class="sched-row reveal d1">
+          <span class="sched-when">Every Sunday</span>
+          <span class="sched-what">Service</span>
+          <span class="sched-time">11:00 AM – 1:00 PM</span>
+        </div>
+        <div class="sched-row reveal d2">
+          <span class="sched-when">1st Friday</span>
+          <span class="sched-what">Prayers</span>
+          <span class="sched-time">7:00 – 9:00 PM</span>
+        </div>
+        <div class="sched-row reveal d3">
+          <span class="sched-when">2nd Friday</span>
+          <span class="sched-what">Praise and Worship Gather</span>
+          <span class="sched-time">7:00 – 9:00 PM</span>
+        </div>
+        <div class="sched-row reveal d4">
+          <span class="sched-when">3rd Saturday</span>
+          <span class="sched-what">Street Evangelism</span>
+          <span class="sched-time">11:00 AM – 1:00 PM</span>
         </div>
       </div>
     </div>
@@ -688,9 +769,64 @@
              target="_blank" rel="noopener noreferrer">
             <span class="mini-play" aria-hidden="true"></span>
             <span class="tag">Live</span>
-            <h4>Sundays live — 10:30 AM</h4>
+            <h4>Sundays live — 11:00 AM</h4>
             <p>Listen on Ginomai Radio <span class="ext" aria-hidden="true">↗</span></p>
           </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RADIO PROGRAMMES ============ -->
+  <section id="radio" class="radio" aria-label="Ginomai Radio programmes">
+    <div class="pin-track">
+      <div class="pin-stage">
+        <div class="wrap">
+          <div class="sec-head">
+            <div class="eyebrow"><span class="ring-dot"></span>On Ginomai Radio</div>
+            <h2>Our radio <span class="becoming">programmes</span></h2>
+            <p>Download the Zeno app and search <strong>Ginomai Radio</strong>, or tap any programme to listen now.</p>
+          </div>
+          <ol class="prog">
+        <li class="prog-day">Saturday</li>
+        <li><a class="prog-row" href="https://content-api.zeno.fm/s/9g7bTB" target="_blank" rel="noopener noreferrer">
+          <span class="prog-time">12:00 – 1:00 PM</span>
+          <span class="prog-name">Words of Grace</span>
+          <span class="prog-host">Br. Benson Okwanga</span>
+        </a></li>
+        <li><a class="prog-row" href="https://content-api.zeno.fm/s/9g7bTB" target="_blank" rel="noopener noreferrer">
+          <span class="prog-time">2:00 – 3:00 PM</span>
+          <span class="prog-name">Deep Councils</span>
+          <span class="prog-host">Br. Steve Ijala</span>
+        </a></li>
+        <li><a class="prog-row" href="https://content-api.zeno.fm/s/9g7bTB" target="_blank" rel="noopener noreferrer">
+          <span class="prog-time">3:00 – 4:00 PM</span>
+          <span class="prog-name">Bible Truth</span>
+          <span class="prog-host">Ap. Kenneth Bamuleeta</span>
+        </a></li>
+        <li><a class="prog-row" href="https://content-api.zeno.fm/s/9g7bTB" target="_blank" rel="noopener noreferrer">
+          <span class="prog-time">4:00 – 5:00 PM</span>
+          <span class="prog-name">Love Each Other</span>
+          <span class="prog-host">Sis. Moreen Wizera &amp; Sis. Sharon Nalwanga</span>
+        </a></li>
+        <li class="prog-day">Sunday</li>
+        <li><a class="prog-row" href="https://content-api.zeno.fm/s/9g7bTB" target="_blank" rel="noopener noreferrer">
+          <span class="prog-time">11:00 AM – 1:00 PM</span>
+          <span class="prog-name">Sunday Service</span>
+          <span class="prog-host">Ap. Kenneth Bamuleeta</span>
+        </a></li>
+        <li><a class="prog-row" href="https://content-api.zeno.fm/s/9g7bTB" target="_blank" rel="noopener noreferrer">
+          <span class="prog-time">3:00 – 4:00 PM</span>
+          <span class="prog-name">The Patrol</span>
+          <span class="prog-host">Br. Timothy Arinanye</span>
+        </a></li>
+        <li><a class="prog-row" href="https://content-api.zeno.fm/s/9g7bTB" target="_blank" rel="noopener noreferrer">
+          <span class="prog-time">4:00 – 6:00 PM</span>
+          <span class="prog-name">Benchmark</span>
+          <span class="prog-host">Sis. Morren Nagasha</span>
+        </a></li>
+          </ol>
+          <p class="prog-foot">Thank you for listening to the heavenly atmosphere.</p>
         </div>
       </div>
     </div>
@@ -741,10 +877,25 @@
         </div>
       </div>
       <div class="give-panel reveal d2">
-        <h3>Ways to give</h3>
+        <h3>Mobile Money giving</h3>
+        <div class="momo">
+          <div class="momo-net">
+            <div class="momo-name">Airtel Money</div>
+            <ol>
+              <li>Dial <a class="ussd" href="tel:*185*9%23">*185*9#</a></li>
+              <li>Enter merchant code <b class="code">4373787</b></li>
+            </ol>
+          </div>
+          <div class="momo-net">
+            <div class="momo-name">MTN MoMo Pay</div>
+            <ol>
+              <li>Dial <a class="ussd" href="tel:*165*3*1%23">*165*3*1#</a></li>
+              <li>Enter merchant code <b class="code">411327</b></li>
+            </ol>
+          </div>
+        </div>
+        <h3 style="font-size:19px;margin-top:30px">Other ways to give</h3>
         <ul>
-          <li><span><b>Online</b> — secure card or mobile giving, one-time or recurring.</span></li>
-          <li><span><b>Mobile Money</b> — give from your phone in seconds, any network.</span></li>
           <li><span><b>Bank Transfer</b> — details available from the finance desk.</span></li>
           <li><span><b>In Person</b> — at any Sunday service or at the church office.</span></li>
         </ul>
@@ -777,7 +928,7 @@
             </div>
             <div>
               <dt>Online</dt>
-              <dd>@GinomaiGlobal<small>YouTube · Facebook · Instagram — Sundays live from 10:30 AM</small></dd>
+              <dd>@GinomaiGlobal<small>YouTube · Facebook · Instagram — Sundays live from 11:00 AM</small></dd>
             </div>
           </dl>
         </div>
@@ -903,6 +1054,26 @@
     addEventListener('resize', emerge, {passive:true});
     emerge();
   }
+
+  // radio schedule: the section holds still while every programme reveals
+  const radio = document.querySelector('.radio');
+  const track = radio && radio.querySelector('.pin-track');
+  const progRows = radio ? [...radio.querySelectorAll('.prog-row')] : [];
+  if (track && progRows.length && !reduce) {
+    radio.classList.add('js-pin');
+    let pending = false;
+    const paint = () => {
+      pending = false;
+      const r = track.getBoundingClientRect();
+      const span = r.height - innerHeight;
+      const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 1;
+      progRows.forEach((el, i) => el.classList.toggle('on', p >= (i + 0.2) / progRows.length * 0.60));
+    };
+    addEventListener('scroll', () => { if (!pending) { pending = true; requestAnimationFrame(paint); } }, {passive:true});
+    addEventListener('resize', paint, {passive:true});
+    paint();
+  }
+
 </script>
 
 </body>
