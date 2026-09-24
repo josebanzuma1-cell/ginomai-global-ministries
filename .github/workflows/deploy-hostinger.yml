@@ -1,0 +1,111 @@
+name: Publish to Hostinger
+
+# Push to main -> this publishes the site to the `deploy` branch. Hostinger's
+# Git integration tracks `deploy` and pulls it into public_html (see README
+# "Deploying" for the one-time hPanel setup).
+#
+# No build step (same as deploy-pages.yml): this site is plain static files
+# with no dependencies. This workflow only stages the files that actually
+# belong on the live site (index.html, assets/) onto a clean branch --
+# dev-only files like serve.js and README.md are left out, and Hostinger's
+# Git deploy runs `git pull` only, so the branch it tracks has to hold the
+# deployable files at its root already. `main` stays the real source tree.
+
+on:
+  push:
+    branches: [main]
+  # Lets you re-deploy from the Actions tab without pushing a code change.
+  workflow_dispatch:
+
+# Never let two deploys race each other onto the same branch.
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # needed to push the staged site to the `deploy` branch
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Stage the deployable site
+        run: |
+          mkdir -p site
+          cp index.html site/
+          cp -R assets site/
+          # Add robots.txt / sitemap.xml / favicon here too if they're ever added.
+
+      - name: Sanity-check the staged site
+        run: |
+          test -f site/index.html || { echo "::error::site/index.html missing."; exit 1; }
+          echo "Staged $(find site -type f | wc -l) files, $(du -sh site | cut -f1) total."
+
+      - name: Upload site as a downloadable zip
+        # Fallback path: if Hostinger's Git pull ever misbehaves, grab this
+        # from the run's summary page (Actions tab > this run > Artifacts),
+        # unzip, and drop the CONTENTS into public_html. Its internal layout
+        # is already the web-root layout -- index.html sits at the top.
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-for-hostinger
+          path: site
+          retention-days: 30
+
+      - name: Publish to deploy branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          WORK="$(mktemp -d)"
+
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Reuse the existing deploy branch so history stays linear -- Hostinger
+          # pulls this branch, and a force-pushed/orphaned history would make its
+          # `git pull` fail on the server.
+          if git ls-remote --exit-code --heads "$REPO_URL" deploy >/dev/null 2>&1; then
+            git clone --branch deploy --single-branch --depth 1 "$REPO_URL" "$WORK"
+          else
+            echo "No deploy branch yet - creating it."
+            git clone --depth 1 "$REPO_URL" "$WORK"
+            git -C "$WORK" checkout --orphan deploy
+            git -C "$WORK" rm -rf --quiet . || true
+          fi
+
+          # Replace the tracked tree wholesale so deleted files don't linger.
+          find "$WORK" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          cp -R site/. "$WORK"/
+
+          cd "$WORK"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Site identical to the last deploy - nothing to push."
+            exit 0
+          fi
+          git commit -m "Deploy ${GITHUB_SHA::7}: ${GITHUB_REF_NAME}"
+          git push origin deploy
+          echo "Published to deploy branch."
+
+      - name: Ping Hostinger auto-deploy webhook
+        # Optional. Add HOSTINGER_DEPLOY_WEBHOOK (hPanel > Advanced > GIT >
+        # Auto Deployment) as a repo secret and Hostinger pulls immediately;
+        # without it the site updates when you click Deploy in hPanel.
+        #
+        # The empty-check lives in the script, not in `if:` -- the `secrets`
+        # context isn't available to step-level conditionals.
+        env:
+          WEBHOOK: ${{ secrets.HOSTINGER_DEPLOY_WEBHOOK }}
+        run: |
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "No HOSTINGER_DEPLOY_WEBHOOK secret set - skipping."
+            echo "The deploy branch is updated; pull it from hPanel > Advanced > GIT > Deploy."
+            exit 0
+          fi
+          curl --fail --silent --show-error --location "$WEBHOOK" >/dev/null
+          echo "Hostinger pull triggered."

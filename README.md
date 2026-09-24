@@ -28,6 +28,41 @@ Then open the printed URL (e.g. http://localhost:3000).
 
 Or just open `index.html` directly in a browser — the site is fully self-contained.
 
+## Deploying
+
+The site ships to three places, each independent of the others:
+
+- **Vercel** (primary, live at https://ginomai-global-ministries.vercel.app) —
+  **not** connected to GitHub. A push to `main` does **not** update it.
+  Deploy with:
+  ```sh
+  git push origin main
+  vercel deploy --prod --yes
+  ```
+- **GitHub Pages** (backup) — auto-deploys on every push to `main` via
+  `.github/workflows/deploy-pages.yml`. No setup needed, already live.
+- **Hostinger** — auto-publishes on every push to `main` via
+  `.github/workflows/deploy-hostinger.yml`, which stages just the real site
+  files (`index.html`, `assets/`) onto a `deploy` branch. One-time setup,
+  in Hostinger's hPanel → Advanced → GIT:
+  - Repository: `https://github.com/josebanzuma1-cell/ginomai-global-ministries`
+  - Branch: **`deploy`** ← not `main`
+  - Directory: `public_html` (or a subfolder, if this isn't the account's
+    primary domain)
+
+  Hit **Deploy** once to pull the first copy. Optionally copy the **Auto
+  Deployment webhook URL** from that same hPanel section and add it to
+  GitHub as a repo secret named `HOSTINGER_DEPLOY_WEBHOOK` — the workflow
+  pings it after each publish, so Hostinger updates within seconds instead
+  of waiting for a manual click. No build step is involved anywhere (this
+  site has none), so `npm ci`/`npm run build` never appear in either
+  workflow — they just copy files.
+
+**So after a normal `git push origin main`: GitHub Pages and Hostinger
+update automatically, Vercel does not** (needs the extra `vercel deploy`
+step above) — worth remembering so a stale Vercel tab doesn't look like a
+broken deploy.
+
 ## Customize before launch
 
 Search `index.html` for these placeholders and replace with real details:
