@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  One URL, deliberately. The site is a single page: About, Sundays, Ministries,
+  Watch, Radio, Events, Give and Visit are #anchors on index.html, not separate
+  pages. Google does not index fragments as distinct URLs, so listing them would
+  only produce duplicate-URL warnings in Search Console.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://ginomaiglobalministries.com/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+</urlset>

@@ -35,13 +35,15 @@ jobs:
       - name: Stage the deployable site
         run: |
           mkdir -p site
-          cp index.html site/
+          cp index.html robots.txt sitemap.xml site/
           cp -R assets site/
-          # Add robots.txt / sitemap.xml / favicon here too if they're ever added.
+          # Add favicon / any new root-level file here too.
 
       - name: Sanity-check the staged site
         run: |
           test -f site/index.html || { echo "::error::site/index.html missing."; exit 1; }
+          test -f site/sitemap.xml || { echo "::error::site/sitemap.xml missing."; exit 1; }
+          test -f site/robots.txt  || { echo "::error::site/robots.txt missing."; exit 1; }
           echo "Staged $(find site -type f | wc -l) files, $(du -sh site | cut -f1) total."
 
       - name: Upload site as a downloadable zip
